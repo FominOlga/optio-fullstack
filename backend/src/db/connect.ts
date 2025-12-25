@@ -1,20 +1,29 @@
 import mongoose from "mongoose";
+import config from "../config";
 
-const username = process.env.DB_USERNAME;
-const password = process.env.DB_PASSWORD;
-const encodedPassword = encodeURIComponent(password as string);
-const cluster = process.env.DB_HOST;
-const appName = process.env.DB_APP_NAME;
-const uri =
-  `mongodb+srv://${username}:${encodedPassword}@${cluster}/?appName=${appName}`
+const { host, port, dbName, user, password } = config.db;
+
+let MONGO_URI: string;
+
+if (process.env.NODE_ENV === "production") {
+  console.log("NODE_ENV is production! Connecting to MongoDB Atlas...");
+  const encodedPassword = encodeURIComponent(password as string);
+
+  // MongoDB Atlas URI
+  MONGO_URI = `mongodb+srv://${user}:${encodedPassword}@${host}/?appName=${dbName}`;
+} else {
+  // Local dev/test
+  console.log("NODE_ENV is dev or test! Connecting to local MongoDB..."); 
+  MONGO_URI = `mongodb://${host}:${port}/${dbName}`;
+}
 
 export const connectDB = async () => {
   try {
-    await mongoose.connect(uri as string);
-    console.log("✅ Connected to MongoDB Atlas");
+    await mongoose.connect(MONGO_URI as string);
+    console.log("✅ Connected to MongoDB database");
   } catch (error) {
     console.error("❌ MongoDB connection error:", error);
-    console.error('uri: ',uri)
-        process.exit(1);
+    console.error('uri: ',MONGO_URI)
+    process.exit(1);
   }
 };
