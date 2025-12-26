@@ -1,0 +1,53 @@
+import { Box, Button, TextField } from "@mui/material";
+import { useFormContext } from "react-hook-form";
+import type { LoginFormValues } from "../auth/types";
+
+type Props = {
+    onSubmit: (data: LoginFormValues) => void;
+};
+
+export default function LoginForm({ onSubmit }: Props) {
+    const {
+        register,
+        handleSubmit,
+        formState: { errors, isSubmitting },
+    } = useFormContext<LoginFormValues>();
+
+    return (
+        <Box component="form" onSubmit={handleSubmit(onSubmit)}>
+            <TextField
+                label="Email"
+                fullWidth
+                margin="normal"
+                {...register("email", {
+                    required: "Email is required",
+                })}
+                error={!!errors.email}
+                helperText={errors.email?.message}
+            />
+
+            <TextField
+                label="Password"
+                type="password"
+                fullWidth
+                margin="normal"
+                {...register("password", {
+                    required: "Password is required",
+                })}
+                error={!!errors.password}
+                helperText={errors.password?.message}
+            />
+
+            <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                size="large"
+                sx={{ mt: 3, borderRadius: 999 }}
+                disabled={isSubmitting}
+            >
+                Log in
+            </Button>
+        </Box>
+    );
+}
