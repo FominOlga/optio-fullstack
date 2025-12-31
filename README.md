@@ -1,4 +1,4 @@
-#Fullstack Optio App (Vite + Express + TypeScript)
+# Fullstack Polly App (Vite + Express + TypeScript)
 
 This project is a social web app that allows your friends to vote on your polls
 
