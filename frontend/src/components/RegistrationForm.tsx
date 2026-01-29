@@ -84,7 +84,7 @@ export default function RegistrationForm({ onSubmit }: Props) {
                 sx={{ mt: 3, borderRadius: 999 }}
                 disabled={isSubmitting}
             >
-                Create
+                Register
             </Button>
         </Box>
     );

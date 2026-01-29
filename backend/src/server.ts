@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
+import routes from "./routes";
 
 dotenv.config();
 import { connectDB } from "./db/connect";
@@ -10,14 +11,16 @@ const app = express();
 app.use(cors()); // allow frontend to call the backend
 app.use(express.json());
 
+app.use("/api", routes); // Mount all API routes under /api
+
 const PORT = process.env.PORT || 5000;
 
 const startServer = async () => {
-  await connectDB();
+    await connectDB();
 
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-})
-}
+    app.listen(PORT, () => {
+        console.log(`Server running on http://localhost:${PORT}`);
+    });
+};
 
 startServer();

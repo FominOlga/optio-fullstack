@@ -37,17 +37,28 @@ export default function LoginForm({ onSubmit }: Props) {
                 error={!!errors.password}
                 helperText={errors.password?.message}
             />
-
-            <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                size="large"
-                sx={{ mt: 3, borderRadius: 999 }}
-                disabled={isSubmitting}
-            >
-                Log in
-            </Button>
+            <Box display="flex" gap={2}>
+                <Button
+                    type="submit"
+                    variant="contained"
+                    fullWidth
+                    size="large"
+                    sx={{ mt: 3, borderRadius: 999 }}
+                    disabled={isSubmitting}
+                >
+                    Log in
+                </Button>
+                <Button
+                    type="submit"
+                    variant="outlined"
+                    fullWidth
+                    size="large"
+                    sx={{ mt: 3, borderRadius: 999 }}
+                    disabled={isSubmitting}
+                >
+                    Demo Login
+                </Button>
+            </Box>
         </Box>
     );
 }

@@ -4,8 +4,14 @@ import LoginForm from "../components/LoginForm";
 import backgroundImageSrc from "../assets/images/hero.jpg";
 import { useForm, FormProvider } from "react-hook-form";
 import type { LoginFormValues } from "../auth/types";
+import { useAuth } from "../auth/AuthContext";
+import { api } from "../api/client";
+import { useNavigate } from "react-router";
 
 export default function LoginPage() {
+    const { login } = useAuth();
+    const navigate = useNavigate();
+
     const methods = useForm<LoginFormValues>({
         defaultValues: {
             email: "",
@@ -15,7 +21,12 @@ export default function LoginPage() {
 
     const onSubmit = async (data: LoginFormValues) => {
         console.log("Login payload:", data);
-        // call API here
+
+        const res = await api.post("/auth/login", data);
+
+        login(res.data.data.accessToken);
+
+        navigate("/dashboard");
     };
 
     return (
