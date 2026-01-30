@@ -8,16 +8,18 @@ import { connectDB } from "./db/connect";
 
 const app = express();
 
-app.use(cors({
-  origin: "http://localhost:5173",
-  credentials: true,
-})); // allow frontend to call the backend
+app.use(
+    cors({
+        origin: "http://localhost:5173",
+        credentials: true,
+    }),
+); // allow frontend to call the backend
 
 app.use(express.json());
 
 app.use("/api", routes); // Mount all API routes under /api
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5050;
 
 const startServer = async () => {
     await connectDB();

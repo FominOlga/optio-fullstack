@@ -10,19 +10,19 @@ api.interceptors.request.use((config) => {
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
     }
-    console.log('Token not found in localStorage');
+    console.log("Token not found in localStorage");
     return config;
 });
 
 // Handle expired tokens
 api.interceptors.response.use(
-  (res) => res,
-  (error) => {
-    if (error.response?.status === 401) {
-      localStorage.removeItem("token");
-      window.location.href = "/login";
-    }
+    (res) => res,
+    (error) => {
+        if (error.response?.status === 401) {
+            localStorage.removeItem("token");
+            window.location.href = "/login";
+        }
 
-    return Promise.reject(error);
-  }
+        return Promise.reject(error);
+    },
 );

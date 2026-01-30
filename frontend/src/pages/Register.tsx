@@ -30,7 +30,6 @@ export default function RegisterPage() {
     });
 
     const onSubmit = async (data: RegisterFormValues) => {
-        console.log("Register payload:", data);
         setApiError(null);
         try {
             const res = await api.post("/auth/register", data);
