@@ -2,7 +2,8 @@ import { useState } from "react";
 import Grid from "@mui/material/Grid";
 import { Box, Typography, Alert } from "@mui/material";
 import LoginForm from "../components/LoginForm";
-import backgroundImageSrc from "../assets/images/hero.jpg";
+import HeroImage from "../components/HeroImage";
+import { AuthHeroButton } from "../components/AuthHeroButton";
 import { useForm, FormProvider } from "react-hook-form";
 import type { LoginFormValues } from "../auth/types";
 import { useAuth } from "../auth/AuthContext";
@@ -57,15 +58,8 @@ export default function LoginPage() {
                 </Grid>
 
                 {/* Right: Image */}
-                <Grid
-                    size={{ xs: 0, md: 6 }}
-                    sx={{
-                        backgroundImage: `url(${backgroundImageSrc})`,
-                        backgroundRepeat: "no-repeat",
-                        backgroundSize: "cover",
-                        backgroundPosition: "center",
-                    }}
-                />
+                <HeroImage />
+                <AuthHeroButton />
             </Grid>
         </FormProvider>
     );

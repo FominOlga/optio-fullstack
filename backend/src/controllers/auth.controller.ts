@@ -40,3 +40,11 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
         next(err);
     }
 };
+
+export const logout = async (_req: Request, res: Response) => {
+    // For stateless JWT, nothing to invalidate yet
+    // TO-DO: add refresh tokens, delete refresh token from DB, clear cookie, prevent silent re-login
+    return res.status(200).json({
+        message: "Logged out successfully",
+    });
+};
