@@ -1,5 +1,6 @@
+import { useState } from "react";
 import Grid from "@mui/material/Grid";
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, Alert } from "@mui/material";
 import LoginForm from "../components/LoginForm";
 import backgroundImageSrc from "../assets/images/hero.jpg";
 import { useForm, FormProvider } from "react-hook-form";
@@ -7,12 +8,18 @@ import type { LoginFormValues } from "../auth/types";
 import { useAuth } from "../auth/AuthContext";
 import { api } from "../api/client";
 import { useNavigate } from "react-router";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { loginSchema } from "../features/auth/auth.schema";
 
 export default function LoginPage() {
     const { login } = useAuth();
     const navigate = useNavigate();
 
+    const [apiError, setApiError] = useState<string | null>(null);
+
     const methods = useForm<LoginFormValues>({
+        resolver: zodResolver(loginSchema),
+        mode: "onChange",
         defaultValues: {
             email: "",
             password: "",
@@ -22,11 +29,16 @@ export default function LoginPage() {
     const onSubmit = async (data: LoginFormValues) => {
         console.log("Login payload:", data);
 
-        const res = await api.post("/auth/login", data);
+        setApiError(null);
+        try {
+            const res = await api.post("/auth/login", data);
 
-        login(res.data.data.accessToken);
+            login(res.data.data.accessToken);
 
-        navigate("/dashboard");
+            navigate("/dashboard");
+        } catch (err: any) {
+            setApiError(err.message || "Registration failed");
+        }
     };
 
     return (
@@ -39,6 +51,7 @@ export default function LoginPage() {
                             Log in
                         </Typography>
 
+                        {apiError && <Alert severity="error">{apiError}</Alert>}
                         <LoginForm onSubmit={onSubmit} />
                     </Box>
                 </Grid>

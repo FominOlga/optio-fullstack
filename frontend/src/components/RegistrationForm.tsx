@@ -1,5 +1,5 @@
-import { Box, Button, Checkbox, FormControlLabel, TextField } from "@mui/material";
-import { useFormContext, useWatch } from "react-hook-form";
+import { Box, Button, Checkbox, FormControlLabel, TextField, FormControl, FormHelperText } from "@mui/material";
+import { useFormContext } from "react-hook-form";
 import type { RegisterFormValues } from "../auth/types";
 
 type Props = {
@@ -10,11 +10,8 @@ export default function RegistrationForm({ onSubmit }: Props) {
     const {
         register,
         handleSubmit,
-        formState: { errors, isSubmitting },
-        control,
+        formState: { errors, isSubmitting, isValid },
     } = useFormContext<RegisterFormValues>();
-
-    const password = useWatch({ control, name: "password" });
 
     return (
         <Box component="form" onSubmit={handleSubmit(onSubmit)}>
@@ -22,9 +19,7 @@ export default function RegistrationForm({ onSubmit }: Props) {
                 fullWidth
                 label="Your name"
                 margin="normal"
-                {...register("name", {
-                    required: "Name is required",
-                })}
+                {...register("name")}
                 error={!!errors.name}
                 helperText={errors.name?.message}
             />
@@ -33,9 +28,7 @@ export default function RegistrationForm({ onSubmit }: Props) {
                 fullWidth
                 label="Email address"
                 margin="normal"
-                {...register("email", {
-                    required: "Email is required",
-                })}
+                {...register("email")}
                 error={!!errors.email}
                 helperText={errors.email?.message}
             />
@@ -45,9 +38,7 @@ export default function RegistrationForm({ onSubmit }: Props) {
                 label="Password"
                 type="password"
                 margin="normal"
-                {...register("password", {
-                    required: "Password is required",
-                })}
+                {...register("password")}
                 error={!!errors.password}
                 helperText={errors.password?.message}
             />
@@ -57,24 +48,18 @@ export default function RegistrationForm({ onSubmit }: Props) {
                 label="Confirm password"
                 type="password"
                 margin="normal"
-                {...register("confirmPassword", {
-                    required: "Confirm password is required",
-                    validate: (value: string) => {
-                        if (value !== password) {
-                            return "Passwords do not match";
-                        }
-                        return true;
-                    },
-                })}
+                {...register("confirmPassword")}
                 error={!!errors.confirmPassword}
                 helperText={errors.confirmPassword?.message}
             />
 
-            <FormControlLabel
-                sx={{ mt: 1 }}
-                control={<Checkbox {...register("terms")} />}
-                label="By signing up I agree to terms and conditions"
-            />
+            <FormControl error={!!errors.terms} sx={{ mt: 1 }}>
+                <FormControlLabel
+                    control={<Checkbox {...register("terms")} />}
+                    label="By signing up I agree to terms and conditions"
+                />
+                {errors.terms && <FormHelperText>{errors.terms.message}</FormHelperText>}
+            </FormControl>
 
             <Button
                 fullWidth
@@ -82,7 +67,7 @@ export default function RegistrationForm({ onSubmit }: Props) {
                 variant="contained"
                 size="large"
                 sx={{ mt: 3, borderRadius: 999 }}
-                disabled={isSubmitting}
+                disabled={!isValid || isSubmitting}
             >
                 Register
             </Button>

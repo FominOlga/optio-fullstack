@@ -10,33 +10,30 @@ export default function LoginForm({ onSubmit }: Props) {
     const {
         register,
         handleSubmit,
-        formState: { errors, isSubmitting },
+        formState: { errors, isSubmitting, isValid },
     } = useFormContext<LoginFormValues>();
 
     return (
         <Box component="form" onSubmit={handleSubmit(onSubmit)}>
             <TextField
-                label="Email"
                 fullWidth
+                label="Email address"
                 margin="normal"
-                {...register("email", {
-                    required: "Email is required",
-                })}
+                {...register("email")}
                 error={!!errors.email}
                 helperText={errors.email?.message}
             />
 
             <TextField
+                fullWidth
                 label="Password"
                 type="password"
-                fullWidth
                 margin="normal"
-                {...register("password", {
-                    required: "Password is required",
-                })}
+                {...register("password")}
                 error={!!errors.password}
                 helperText={errors.password?.message}
             />
+
             <Box display="flex" gap={2}>
                 <Button
                     type="submit"
@@ -44,10 +41,11 @@ export default function LoginForm({ onSubmit }: Props) {
                     fullWidth
                     size="large"
                     sx={{ mt: 3, borderRadius: 999 }}
-                    disabled={isSubmitting}
+                    disabled={!isValid || isSubmitting}
                 >
                     Log in
                 </Button>
+
                 <Button
                     type="submit"
                     variant="outlined"

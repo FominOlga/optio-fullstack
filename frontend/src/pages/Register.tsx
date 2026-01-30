@@ -8,6 +8,8 @@ import type { RegisterFormValues } from "../auth/types";
 import { useAuth } from "../auth/AuthContext";
 import { api } from "../api/client";
 import { useNavigate } from "react-router";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { registerSchema } from "../features/auth/auth.schema";
 
 export default function RegisterPage() {
     const { login } = useAuth();
@@ -16,6 +18,8 @@ export default function RegisterPage() {
     const [apiError, setApiError] = useState<string | null>(null);
 
     const methods = useForm<RegisterFormValues>({
+        resolver: zodResolver(registerSchema),
+        mode: "onChange",
         defaultValues: {
             name: "",
             email: "",
