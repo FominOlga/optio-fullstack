@@ -18,6 +18,7 @@ app.use(
 app.use(express.json());
 
 app.use("/api", routes); // Mount all API routes under /api
+app.use("/uploads", express.static("uploads"));
 
 const PORT = process.env.PORT || 5050;
 

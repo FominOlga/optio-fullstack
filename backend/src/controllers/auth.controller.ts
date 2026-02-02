@@ -1,5 +1,4 @@
 import { Request, Response, NextFunction } from "express";
-import { registerSchema, loginSchema } from "../schemas/auth.schema";
 import * as authService from "../services/auth.service";
 
 /* This controller handles user registration and login:
@@ -10,11 +9,8 @@ import * as authService from "../services/auth.service";
 */
 
 export const register = async (req: Request, res: Response, next: NextFunction) => {
-    console.log("REGISTER HIT", req.body);
     try {
-        const input = registerSchema.parse(req.body);
-        console.log("Register payload on backend:", input);
-        const result = await authService.register(input);
+        const result = await authService.register(req.body);
 
         res.status(201).json({
             data: result,
@@ -28,9 +24,7 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
 
 export const login = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const input = loginSchema.parse(req.body);
-
-        const result = await authService.login(input);
+        const result = await authService.login(req.body);
 
         res.status(200).json({
             data: result,
